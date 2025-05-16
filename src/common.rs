@@ -961,9 +961,11 @@ pub fn get_custom_rendezvous_server(custom: String) -> String {
 #[inline]
 pub fn get_api_server(api: String, custom: String) -> String {
     let res = get_api_server_(api, custom);
-    if res.starts_with("https") && res.ends_with(":21114") {
-        return res.replace(":21114", "");
-    }
+    // 不管是http还是https都保留端口号，不再去掉
+    // 如果需要兼容之前的逻辑，可以取消下面的注释
+    // if res.starts_with("https") && res.ends_with(":21114") {
+    //     return res.replace(":21114", "");
+    // }
     res
 }
 
@@ -990,7 +992,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://800521.xyz:21114".to_owned()
+    "http://800521.xyz:21114".to_owned()
 }
 
 pub fn get_audit_server(api: String, custom: String, typ: String) -> String {
