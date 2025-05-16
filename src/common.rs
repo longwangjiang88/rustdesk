@@ -23,13 +23,13 @@ use hbb_common::{
     rendezvous_proto::*,
     socket_client,
     sodiumoxide::crypto::{box_, secretbox, sign},
-    tcp::FramedStream as Stream,
+    tcp::FramedStream,
     timeout,
     tokio::{
         self,
         time::{Duration, Instant, Interval},
     },
-    ResultType,
+    ResultType, Stream,
 };
 
 use crate::{
@@ -1336,17 +1336,6 @@ pub fn check_process(arg: &str, mut same_uid: bool) -> bool {
         }
     }
     false
-}
-
-// 定义 use_ws 函数，如果 hbb_common 中没有提供
-#[inline]
-pub fn use_ws() -> bool {
-    #[cfg(target_os = "android")]
-    return false;
-    
-    // 确保不使用可能不存在的 is_in_browser 函数
-    // 由于我们是针对 API 的兼容性修改，这里默认返回 false 应该是安全的
-    config::Config::get_bool("enable-ws")
 }
 
 pub async fn secure_tcp(conn: &mut Stream, key: &str) -> ResultType<()> {
