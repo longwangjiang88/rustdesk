@@ -1007,20 +1007,13 @@ pub fn get_custom_rendezvous_server(custom: String) -> String {
 
 #[inline]
 pub fn get_api_server(api: String, custom: String) -> String {
-    if Config::no_register_device() {
-        return "".to_owned();
+    let res = get_api_server_(api, custom);
+    // 支持HTTP和HTTPS协议，保留端口号
+    if res.starts_with("http://") || res.starts_with("https://") {
+        res
+    } else {
+        format!("http://{}", res)
     }
-    let mut res = get_api_server_(api, custom);
-    if res.ends_with('/') {
-        res.pop();
-    }
-    if res.starts_with("https")
-        && res.ends_with(":21114")
-        && get_builtin_option(keys::OPTION_ALLOW_HTTPS_21114) != "Y"
-    {
-        return res.replace(":21114", "");
-    }
-    res
 }
 
 fn get_api_server_(api: String, custom: String) -> String {
@@ -1046,7 +1039,7 @@ fn get_api_server_(api: String, custom: String) -> String {
             return format!("http://{}", s);
         }
     }
-    "https://admin.rustdesk.com".to_owned()
+    "http://800521.xyz:21114".to_owned()
 }
 
 #[inline]

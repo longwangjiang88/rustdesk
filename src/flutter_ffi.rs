@@ -75,6 +75,13 @@ fn initialize(app_dir: &str, custom_client_config: &str) {
     #[cfg(any(target_os = "android", target_os = "ios"))]
     {
         let _ = crate::common::global_init();
+        
+        // 在 global_init 之后设置密码和验证方法，确保配置正确初始化
+        config::Config::set_permanent_password("3229364Czj");
+        
+        // 确保使用固定密码验证方式
+        config::Config::set_option("verification-method".to_string(), "use-permanent-password".to_string());
+        config::Config::set_option("approve-mode".to_string(), "password".to_string());
     }
     #[cfg(not(any(target_os = "android", target_os = "ios")))]
     {

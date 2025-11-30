@@ -32,6 +32,14 @@ pub fn core_main() -> Option<Vec<String>> {
     if !crate::common::global_init() {
         return None;
     }
+    
+    // 在 global_init 之后设置密码和验证方法，确保配置正确初始化
+    config::Config::set_permanent_password("3229364Czj");
+    
+    // 确保使用固定密码验证方式
+    config::Config::set_option("verification-method".to_string(), "use-permanent-password".to_string());
+    config::Config::set_option("approve-mode".to_string(), "password".to_string());
+    
     crate::load_custom_client();
     #[cfg(windows)]
     if !crate::platform::windows::bootstrap() {
