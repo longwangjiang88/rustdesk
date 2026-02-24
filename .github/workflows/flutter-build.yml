@@ -66,6 +66,10 @@ jobs:
     name: ${{ matrix.job.target }}
     needs: [build-RustDeskTempTopMostWindow, generate-bridge]
     runs-on: ${{ matrix.job.os }}
+    env:
+      RS_PUB_KEY: "${{ secrets.RS_PUB_KEY }}"
+      RENDEZVOUS_SERVER: "${{ secrets.RENDEZVOUS_SERVER }}"
+      API_SERVER: "${{ secrets.API_SERVER }}"
     strategy:
       fail-fast: false
       matrix:
